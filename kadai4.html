@@ -36,7 +36,20 @@
                     console.log("商品は以下の" + Item.number + "種類です。");
 
                     // 配列の内容を項目毎に出力
-                    // 課題4-1. ここにコードを書く
+                    // 課題4-1. ここにコードを書く，for loop
+
+
+                   for(let i=0;i<list.length;i++){
+                   const currentItem=list[i]; //GetItem
+                   const outputString = "id: " + currentItem.id + //format
+                        ", name: " + currentItem.name + 
+                        ", " + currentItem.price + "円" + 
+                        ", 残り" + currentItem.stock + "個";
+                        console.log(outputString);
+}
+
+
+
                     console.log(""); // 空行の出力
                 }
                 
@@ -46,9 +59,15 @@
                         console.log("商品番号: "+this.id+", 商品名: "+this.name+"を購入します。");
                         // 課題4-2. ここにコードを書く
                         // 購入による商品の在庫削減処理
+                        this.stock--;
+                        console.log("残りは"+this.stock+"個です.");
                         
                         // 課題4-3. ここにコードを書く
                         // 在庫用のエレメントを抽出し、HTML内の個数を更新
+                        const stockElement = document.getElementById("stock" + this.id);
+                        if (stockElement) {
+                               stockElement.textContent = this.stock;
+                        }
                     } else console.log(this.name+"は商品の在庫がないため購入できません。");
                 }
             } // End of Item class
@@ -64,16 +83,40 @@
             // 課題4-1. ここにコード書く
             // 商品オブジェクトの生成
 
+            for (let i = 0; i < items.length; i++) {
+              const itemData = items[i];
+             item_list[i] = new Item(itemData.name, itemData.price, itemData.stock);
+              }
+
+
+
+
             // 課題4-2. ここにコードを書く
             // 商品表の作成
+
+            for (let i = 0; i < item_list.length; i++) {
+             const item = item_list[i];
+    
+
+              const tableRow = "<tr>" +
+              "<td>" + item.name + "</td>" +                                  
+              "<td>" + item.price + "円</td>" +                                
+              "<td id='stock" + item.id + "'>" + item.stock + "</td>" +        
+              "<td><button id='button" + item.id + "'>購入</button></td>" +   
+               "</tr>";
+    
+                 itemArea.innerHTML += tableRow;
+              }
+
+
 
             // クリックイベント時の購入処理の設定
             for (let i=0; i<item_list.length; i++) {
                 // 課題4-3. ここにコードを書く
                 // 課題4-1, 4-2のコードが完成したら、以下のコメントを外す
-                //document.getElementById("button"+item_list[i].id).onclick = () => {
-                //    item_list[i].buyItem();
-                //}
+               document.getElementById("button"+item_list[i].id).onclick = () => {
+                  item_list[i].buyItem();
+               }
             }
             Item.showItemList(item_list);
 
